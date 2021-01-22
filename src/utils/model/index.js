@@ -78,7 +78,7 @@ class Model {
         const response = await this.run(query)
         return response;
     }
-
+//🎇🎆🎇🎆🎇🎆🎇🎆
 }
 
 
