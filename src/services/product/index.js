@@ -1,9 +1,24 @@
 const router = require("express").Router();
 
+const multer = require("multer");
+const cloudinary = require("../cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
 const { response } = require("express");
 const Model = require("../../utils/model")
 
 const Product = new Model('product');
+const db = require("../../utils/db");
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "market",
+  },
+});
+
+const cloudinaryMulter = multer({ storage: storage });
+
 
 router.get("/", async (req, res, next) => {
   try {
@@ -35,6 +50,18 @@ router.post("/", async (req, res, next) => {
   }
 
 });
+
+router.post("/:id/upload/", cloudinaryMulter.single("image"), 
+            async(req, res, next) => {
+  try{
+    const query = `UPDATE product SET image_url='${req.file.path}' 
+                    WHERE id=${req.params.id};`
+    res = await db.query(query);
+    return res;
+  } catch(error){
+    next(error)
+  }
+})
 
 router.put("/:id", async (req, res, next) => {
   try {

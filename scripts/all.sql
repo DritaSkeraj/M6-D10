@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Product (
 	name VARCHAR(50),
 	description VARCHAR(500),
 	brand VARCHAR(50),
-	image_URL VARCHAR(30),
+	image_URL VARCHAR(100),
 	price NUMERIC(5, 2),
 	category INTEGER,
 	createdAt DATE,
