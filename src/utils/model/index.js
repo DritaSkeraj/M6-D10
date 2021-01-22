@@ -70,6 +70,14 @@ class Model {
         const response = await this.run(query)
         return response;
     }
+    async getProductReviews(pid){
+        if(!pid || pid <= 0){
+            throw new Error("we need a positive id")
+        }
+        const query = `SELECT r.comment, r.rate FROM review r INNER JOIN product p ON r.product_id=p.id WHERE r.product_id=${pid};`
+        const response = await this.run(query)
+        return response;
+    }
 
 }
 

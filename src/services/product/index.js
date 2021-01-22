@@ -40,6 +40,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/productReviews/:pid", async(req, res, next) =>{
+  try{
+    const {rows} = await Product.getProductReviews(req.params.pid)
+    res.send(rows);
+  } catch(error){
+    console.log(error)
+    res.status(500).send(error)
+  }
+});
+
 router.post("/", async (req, res, next) => {
   try {
     const response = await Product.save(req.body);
