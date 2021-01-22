@@ -47,14 +47,14 @@ class Model {
 
     async findOne(fields){ // {name:'Luis',lastname:'Ordonez'} => 'name'="'Diego'" AND 'lastname'="'Banovaz'"
         if(!fields||Object.values(fields).length===0){
-            const query = `SELECT * FROM ${this.name}`
+            const query = `SELECT * FROM ${this.name} LIMIT 10 OFFSET 0;`
             const response = await this.run(query);
             return response;
         }
         else{
             const entries = Object.entries(fields);
             const whereClause = `${entries.map(([key,value])=>`${key}='${value}'`).join(" AND ")}`;
-            const query = `SELECT * FROM ${this.name} WHERE  ${whereClause};`
+            const query = `SELECT * FROM ${this.name} WHERE  ${whereClause} LIMIT 10 OFFSET 0;`
             const response = await this.run(query);
             return response;
         }
@@ -74,7 +74,17 @@ class Model {
         if(!pid || pid <= 0){
             throw new Error("we need a positive id")
         }
-        const query = `SELECT r.comment, r.rate FROM review r INNER JOIN product p ON r.product_id=p.id WHERE r.product_id=${pid};`
+        const query = `SELECT r.comment, r.rate FROM review r INNER JOIN product p ON r.product_id=p.id WHERE r.product_id=${pid} LIMIT 10 OFFSET 0;`
+        const response = await this.run(query)
+        return response;
+    }
+    async getCategoryProducts(cid){
+        if(!cid || cid <= 0){
+            console.log("CID:::::::::::::", cid);
+            throw new Error("we need a positive id")
+        }
+        const query = `SELECT p.name, p.description, p.brand, p.image_url, p.price FROM product p INNER JOIN 
+        category c ON c.id=p.category WHERE c.id=${cid} LIMIT 10 OFFSET 0;`
         const response = await this.run(query)
         return response;
     }

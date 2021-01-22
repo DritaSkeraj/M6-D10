@@ -24,6 +24,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/:cid/products", async(req, res, next) => {
+  try{
+    const {rows} = await Category.getCategoryProducts(req.params.cid);
+    res.send(rows);
+  } catch(error){
+    console.log(error)
+    res.status(500).send(error)
+  }
+})
+
 router.post("/", async (req, res, next) => {
   try {
     const response = await Category.save(req.body);

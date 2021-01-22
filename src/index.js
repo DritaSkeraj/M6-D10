@@ -8,9 +8,22 @@ const services = require("./services")
 
 server.use(express.json())
 
-server.use("/",services)
+const whiteList = 'http://127.0.0.1:3001/'
 
-server.use(cors())
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1) {
+      // allowed
+      callback(null, true)
+    } else {
+      // Not allowed
+      callback(new Error("NOT ALLOWED - CORS ISSUES"))
+    }
+  },
+}
+server.use(cors()) // CROSS ORIGIN RESOURCE SHARING
+
+server.use("/",services)
 
 const port = process.env.PORT || 3001;
 
